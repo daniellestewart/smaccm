@@ -39,6 +39,9 @@ public class AgreeNodeBuilder {
 	private Map<String, AgreeVar> timeRiseMap = new HashMap<>();
 	private Map<String, AgreeVar> timeFallMap = new HashMap<>();
 
+	public ArrayList<String> safetyIVC = new ArrayList<>();
+	public boolean safetyFlag = false;
+
 	public AgreeNodeBuilder(String id) {
 		this.id = id;
 	}
@@ -279,6 +282,22 @@ public class AgreeNodeBuilder {
 
 	public void setCompInst(ComponentInstance compInst) {
 		this.compInst = compInst;
+	}
+
+	public ArrayList<String> getSafetyIVC() {
+		return safetyIVC;
+	}
+
+	public void addSafetyIVC(String safetyIVC) {
+		this.safetyIVC.add(safetyIVC);
+	}
+
+	public boolean isSafetyFlag() {
+		return safetyFlag;
+	}
+
+	public void setSafetyFlag(boolean safetyFlag) {
+		this.safetyFlag = safetyFlag;
 	}
 
 	public AgreeNode build() {

@@ -188,7 +188,14 @@ public class LustreAstBuilder {
 			IdExpr assumId = new IdExpr(assumName);
 			equations.add(new Equation(assumId, assumption.expr));
 			assertions.add(assumId);
-			ivcs.add(assumId.id);
+
+			// Safety Analysis: if flag is set, use safety analysis ivc list.
+			// If flag is not set, perform the usual ivc set of support behavior.
+			if (flatNode.isSafetyFlag()) {
+				ivcs.addAll(flatNode.getSafetyIVC());
+			} else {
+				ivcs.add(assumId.id);
+			}
 		}
 
 		for (AgreeStatement assertion : flatNode.assertions) {
@@ -357,7 +364,15 @@ public class LustreAstBuilder {
 			AgreeVar stuffAssumptionVar = new AgreeVar(stuffPrefix + assumeSuffix + stuffAssumptionIndex++,
 					NamedType.BOOL, assumption.reference, agreeNode.compInst, null);
 			locals.add(stuffAssumptionVar);
-			ivcs.add(stuffAssumptionVar.id);
+
+			// Safety Analysis: if flag is set, use safety analysis ivc list.
+			// If flag is not set, perform the usual ivc set of support behavior.
+			if (agreeNode.isSafetyFlag()) {
+				ivcs.addAll(agreeNode.getSafetyIVC());
+			} else {
+				ivcs.add(stuffAssumptionVar.id);
+			}
+
 			IdExpr stuffAssumptionId = new IdExpr(stuffAssumptionVar.id);
 			equations.add(new Equation(stuffAssumptionId, assumption.expr));
 
@@ -369,7 +384,15 @@ public class LustreAstBuilder {
 			AgreeVar stuffGuaranteeVar = new AgreeVar(stuffPrefix + guarSuffix + stuffGuaranteeIndex++,
 					NamedType.BOOL, guarantee.reference, agreeNode.compInst, null);
 			locals.add(stuffGuaranteeVar);
-			ivcs.add(stuffGuaranteeVar.id);
+
+			// Safety Analysis: if flag is set, use safety analysis ivc list.
+			// If flag is not set, perform the usual ivc set of support behavior.
+			if (agreeNode.isSafetyFlag()) {
+				ivcs.addAll(agreeNode.getSafetyIVC());
+			} else {
+				ivcs.add(stuffGuaranteeVar.id);
+			}
+
 			IdExpr stuffGuaranteeId = new IdExpr(stuffGuaranteeVar.id);
 			equations.add(new Equation(stuffGuaranteeId, guarantee.expr));
 
@@ -550,7 +573,15 @@ public class LustreAstBuilder {
 			locals.add(new AgreeVar(inputName, NamedType.BOOL, statement.reference, agreeNode.compInst, null));
 			IdExpr guarId = new IdExpr(inputName);
 			equations.add(new Equation(guarId, statement.expr));
-			ivcs.add(guarId.id);
+
+			// Safety Analysis: if flag is set, use safety analysis ivc list.
+			// If flag is not set, perform the usual ivc set of support behavior.
+			if (agreeNode.isSafetyFlag()) {
+				ivcs.addAll(agreeNode.getSafetyIVC());
+			} else {
+				ivcs.add(guarId.id);
+			}
+
 			guarConjExpr = new BinaryExpr(guarId, BinaryOp.AND, guarConjExpr);
 		}
 		for (AgreeStatement statement : agreeNode.lemmas) {

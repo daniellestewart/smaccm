@@ -1,5 +1,6 @@
 package com.rockwellcollins.atc.agree.analysis.ast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +39,10 @@ public class AgreeNode implements AgreeASTElement {
 	public final Map<String, AgreeVar> timeOfMap;
 	public final Map<String, AgreeVar> timeRiseMap;
 	public final Map<String, AgreeVar> timeFallMap;
-
 	public final Set<AgreeVar> eventTimes;
+
+	public ArrayList<String> safetyIVC = new ArrayList<>();
+	public boolean safetyFlag = false;
 
 	public AgreeNode(String id, List<AgreeVar> inputs, List<AgreeVar> outputs, List<AgreeVar> locals,
 			List<AgreeEquation> localEquations, List<AgreeConnection> connections, List<AgreeNode> subNodes,
@@ -84,6 +87,22 @@ public class AgreeNode implements AgreeASTElement {
 	@Override
 	public String toString() {
 		return id;
+	}
+
+	public ArrayList<String> getSafetyIVC() {
+		return safetyIVC;
+	}
+
+	public void setSafetyIVC(ArrayList<String> safetyIVC) {
+		this.safetyIVC = safetyIVC;
+	}
+
+	public boolean isSafetyFlag() {
+		return safetyFlag;
+	}
+
+	public void setSafetyFlag(boolean safetyFlag) {
+		this.safetyFlag = safetyFlag;
 	}
 
 }
